@@ -7,20 +7,34 @@ on:
     branches: [master]
 
 jobs:
-  test:
+  deployment:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest]
-        sdk: [2.19.0, stable]
+        sdk: [2.19.0]
+    environment: deploy
     steps:
-      - uses: actions/checkout@v3
-      - uses: dart-lang/setup-dart@v1
-        with:
-          sdk: ${{ matrix.sdk }}
-
       - name: Install dependencies
         run: dart pub get
+      - name: Run pub
+        run: dart run lib/main.dart
 
-      - name: Run tests
-        run: dart test
+  # ...deployment-specific steps
+  # test:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [windows-latest]
+  #       sdk: [2.19.0]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: dart-lang/setup-dart@v1
+  #       with:
+  #         sdk: ${{ matrix.sdk }}
+
+  #     - name: Install dependencies
+  #       run: dart pub get
+
+  #     - name: Run tests
+  #       run: dart test
